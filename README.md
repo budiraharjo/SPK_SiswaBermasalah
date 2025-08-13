@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Mezur Framework
 
 Mini PHP Framework yang terinspirasi dari Laravel, menggunakan arsitektur MVC dan Composer. Cocok untuk pembelajaran atau proyek kecil-menengah.
@@ -66,3 +67,6 @@ php mezur serve
 =======
 # SPK_SiswaBermasalah
 >>>>>>> 003f22cd682eae43fd5897e2dc808c25d4fb48ed
+=======
+# SPK_SiswaBermasalah
+>>>>>>> df6370ad0283932d233cc326e521779a78357790
