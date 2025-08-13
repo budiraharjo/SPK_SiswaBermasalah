@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Mezur Framework
 
 Mini PHP Framework yang terinspirasi dari Laravel, menggunakan arsitektur MVC dan Composer. Cocok untuk pembelajaran atau proyek kecil-menengah.
@@ -62,3 +63,6 @@ git clone https://github.com/budiraharjo/MezurFramework.git
 cd MezurFramework
 composer install
 php mezur serve
+=======
+# SPK_SiswaBermasalah
+>>>>>>> 003f22cd682eae43fd5897e2dc808c25d4fb48ed
