@@ -50,6 +50,7 @@ Route::get('/dashboard/penilaian-saw', 'PenilaianSawController@index');
 Route::post('/dashboard/penilaian-saw/store', 'PenilaianSawController@store');
 Route::post('/dashboard/penilaian-saw/update/{id_nilai}', 'PenilaianSawController@update');
 Route::post('/dashboard/penilaian-saw/delete', 'PenilaianSawController@delete');
+Route::post('/dashboard/penilaian-saw/import', 'PenilaianSawController@importExcel');
 
 // HITUNG SAW
 Route::get('/dashboard/hitung-saw', 'PenilaianSawController@hitung');
@@ -63,6 +64,7 @@ Route::get('/dashboard/penilaian-wp', 'PenilaianWpController@index');
 Route::post('/dashboard/penilaian-wp/store', 'PenilaianWpController@store');
 Route::post('/dashboard/penilaian-wp/update/{id_nilai}', 'PenilaianWpController@update');
 Route::post('/dashboard/penilaian-wp/delete', 'PenilaianWpController@delete');
+Route::post('/dashboard/penilaian-wp/import', 'PenilaianWpController@importExcel');
 
 // HITUNG WP
 Route::get('/dashboard/hitung-wp', 'PenilaianWpController@hitung');

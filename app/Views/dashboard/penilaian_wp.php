@@ -7,7 +7,7 @@
 
             <h4 class="mb-3"><?= $title; ?></h4>
 
-            <!-- Form Tambah Data -->
+            <!-- Form Tambah Data  
             <form action="/dashboard/penilaian-wp/store" method="POST" class="mb-4">
                 <div class="row">
                     <div class="col-md-4">
@@ -43,6 +43,23 @@
                     </div>
                 </div>
             </form>
+			-->
+			
+			<!-- Form Import Excel -->
+			<form action="/dashboard/penilaian-wp/import" method="POST" enctype="multipart/form-data" class="mb-4">
+				<div class="row">
+					<div class="col-md-6">
+						<input type="file" name="file_excel" accept=".xls,.xlsx" class="form-control" required>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-success" type="submit">Import Excel</button>
+					</div>
+				</div>
+				<small class="text-muted">
+					Format Excel: NISN | Nama | Kode Kriteria | Nilai
+				</small>
+			</form>
+	
 			
 			<?php if (!empty($_SESSION['success'])): ?>
 			<div class="alert alert-success alert-dismissible fade show">

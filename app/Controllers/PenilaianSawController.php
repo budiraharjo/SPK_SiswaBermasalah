@@ -222,4 +222,101 @@ class PenilaianSawController
 		require __DIR__ . '/../Views/dashboard/rangking_saw.php';
 	}
 
+public function importExcel()
+{
+    // Cek file upload
+    if (empty($_FILES['file_excel']['tmp_name'])) {
+        $_SESSION['error'] = 'File Excel tidak ditemukan!';
+        header('Location: /dashboard/penilaian-saw');
+        exit;
+    }
+
+    // Load PHPExcel manual (gunakan path sesuai struktur folder kamu)
+    require_once __DIR__ . '/../libraries/PHPExcel/PHPExcel.php';
+    require_once __DIR__ . '/../libraries/PHPExcel/IOFactory.php';
+
+    try {
+        // Baca file excel
+        $inputFileName = $_FILES['file_excel']['tmp_name'];
+        $objPHPExcel   = \PHPExcel_IOFactory::load($inputFileName); // tambahkan backslash
+        $sheetData     = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+
+        // Ambil periode aktif
+        $periodeModel = new \App\Models\Periode();
+        $periodeAktif = $periodeModel->getActive();
+        if (!$periodeAktif) {
+            $_SESSION['error'] = 'Tidak ada periode aktif!';
+            header('Location: /dashboard/penilaian-saw');
+            exit;
+        }
+        $periode = $periodeAktif['periode'];
+
+        // DB connection
+        $db = \Core\Database::getConnection();
+
+        $totalInsert = 0;
+        $totalUpdate = 0;
+
+        // Lewati baris header (mulai dari baris ke-2)
+        foreach ($sheetData as $rowIndex => $row) {
+            if ($rowIndex == 1) continue; // header
+
+            $nisn         = trim($row['A']);
+            $namaExcel    = trim($row['B']);
+            $kodeKriteria = trim($row['C']);
+            $nilai        = floatval($row['D']);
+
+            if (empty($nisn) || empty($kodeKriteria) || $nilai === null) {
+                continue;
+            }
+
+            // Cari id_siswa
+            $stmt = $db->prepare("SELECT id_siswa FROM tb_siswa WHERE nisn = ?");
+            $stmt->execute([$nisn]);
+            $siswa = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if (!$siswa) continue;
+            $id_siswa = $siswa['id_siswa'];
+
+            // Cari id_kriteria
+            $stmt = $db->prepare("SELECT id_kriteria FROM tb_kriteria WHERE kode = ?");
+            $stmt->execute([$kodeKriteria]);
+            $kriteria = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if (!$kriteria) continue;
+            $id_kriteria = $kriteria['id_kriteria'];
+
+            // Cari id_k_metode (SAW)
+            $stmt = $db->prepare("SELECT id_k_metode FROM tb_kriteria_metode WHERE id_kriteria = ? AND metode = 'SAW'");
+            $stmt->execute([$id_kriteria]);
+            $kMetode = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if (!$kMetode) continue;
+            $id_k_metode = $kMetode['id_k_metode'];
+
+            // Cek apakah sudah ada data
+            $stmt = $db->prepare("SELECT id_nilai FROM tb_nilai WHERE id_siswa = ? AND id_k_metode = ? AND periode = ?");
+            $stmt->execute([$id_siswa, $id_k_metode, $periode]);
+            $existing = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if ($existing) {
+                // Update
+                $stmt = $db->prepare("UPDATE tb_nilai SET nilai = ?, sumber = 'import' WHERE id_nilai = ?");
+                $stmt->execute([$nilai, $existing['id_nilai']]);
+                $totalUpdate++;
+            } else {
+                // Insert
+                $stmt = $db->prepare("INSERT INTO tb_nilai (id_siswa, id_k_metode, periode, nilai, sumber) VALUES (?, ?, ?, ?, 'import')");
+                $stmt->execute([$id_siswa, $id_k_metode, $periode, $nilai]);
+                $totalInsert++;
+            }
+        }
+
+        $_SESSION['success'] = "Import selesai! Tambah: {$totalInsert}, Update: {$totalUpdate}";
+    } catch (\Exception $e) {
+        $_SESSION['error'] = 'Gagal membaca file: ' . $e->getMessage();
+    }
+
+    header('Location: /dashboard/penilaian-saw');
+    exit;
+}
+
+
 }
