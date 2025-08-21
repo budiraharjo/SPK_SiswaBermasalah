@@ -50,7 +50,7 @@ $role = strtolower($user['role']);
         <?php endif; ?>
 
         <!-- ================= ADMIN & GURU BK ================= -->
-        <?php if (in_array($role, ['admin', 'guru_bk'])) : ?>
+        <?php if (in_array($role, ['guru_bk'])) : ?>
 
             <!-- Penilaian SAW -->
             <li class="nav-item">
@@ -123,8 +123,7 @@ $role = strtolower($user['role']);
                 </a>
                 <div class="collapse" id="saw">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="/dashboard/penilaian-saw">Penilaian</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/dashboard/rangking-saw">Rangking</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard/penilaian-saw">Penilaian</a></li> 
                     </ul>
                 </div>
             </li>
@@ -138,31 +137,7 @@ $role = strtolower($user['role']);
                 </a>
                 <div class="collapse" id="wp">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="/dashboard/penilaian-wp">Penilaian</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/dashboard/rangking-wp">Rangking</a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <!-- Perbandingan -->
-            <li class="nav-item">
-                <a class="nav-link" href="/dashboard/perbandingan">
-                    <i class="icon-graph menu-icon"></i>
-                    <span class="menu-title">Perbandingan</span>
-                </a>
-            </li>
-
-            <!-- Laporan -->
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#laporan" aria-expanded="false" aria-controls="laporan">
-                    <i class="icon-bar-graph menu-icon"></i>
-                    <span class="menu-title">Laporan</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="laporan">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="/dashboard/laporan-siswa-kelas">Siswa (Kelas Saya)</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/dashboard/laporan-perbandingan">Perbandingan</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard/penilaian-wp">Penilaian</a></li> 
                     </ul>
                 </div>
             </li>
